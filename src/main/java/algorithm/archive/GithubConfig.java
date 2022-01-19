@@ -1,5 +1,6 @@
 package algorithm.archive;
 
+import java.text.MessageFormat;
 import java.util.Objects;
 
 public class GithubConfig {
@@ -21,15 +22,12 @@ public class GithubConfig {
         return new GithubConfig(name, repositoryName, mainBranch);
     }
 
-    public String getUsername() {
-        return username;
-    }
-
-    public String getRepositoryName() {
-        return repositoryName;
-    }
-
-    public String getMainBranch() {
-        return mainBranch;
+    public String parse(final Class<?> clazz) {
+        return MessageFormat.format("https://github.com/{0}/{1}/blob/{2}/{3}/{4}.java",
+            this.username,
+            this.repositoryName,
+            this.mainBranch,
+            clazz.getPackageName().replace(".", "/"),
+            clazz.getSimpleName());
     }
 }
