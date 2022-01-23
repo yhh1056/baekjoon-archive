@@ -10,16 +10,6 @@ import java.lang.annotation.Target;
 public @interface Baekjoon {
 
     /**
-     * baekjoon problem name. (example: A+B)
-     */
-    String name();
-
-    /**
-     * baekjoon problem url. (example: https://www.acmicpc.net/problem/1000)
-     */
-    String url() default "";
-
-    /**
      * baekjoon level. BRONZE, SILVER, GOLD, PLATINUM, DIAMOND, RUBY
      */
     BaekjoonLevel level() default BaekjoonLevel.UNDEFINED;

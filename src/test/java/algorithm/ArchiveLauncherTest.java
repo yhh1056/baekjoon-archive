@@ -23,7 +23,7 @@ class ArchiveLauncherTest {
 
 }
 
-@Baekjoon(name = "test", url = "https://testsetse/10001", level = BaekjoonLevel.RUBY, number = 10001)
+@Baekjoon(number = 10001, level = BaekjoonLevel.RUBY)
 class Solve1 {}
 
 @Programmers(name = "test", url = "https://testsetse/10001", level = ProgrammersLevel.LEVEL5, number = 10001)
