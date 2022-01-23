@@ -3,27 +3,22 @@ package algorithm.file;
 import algorithm.archive.GithubConfig;
 import algorithm.archive.provider.BaekjoonProblem;
 import algorithm.archive.provider.baekjoon.Baekjoon;
+import algorithm.crawling.BaekjoonCrawling;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Queue;
-import org.jsoup.Connection;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 import org.reflections.Reflections;
 
 public class DefaultBaekjoonMarkdownGenerator implements MarkdownGenerator<BaekjoonProblem> {
     private static final String PATH_NAME = "solved/baekjoon.md";
     private static final String HEADER = "## 백준";
     private static final String TABLE_HEAD = "|번호|제목|난이도|풀이|주소|\n|---|---|---|---|---|\n";
+    private static final String BAEKJOON_URL = "https://www.acmicpc.net/problem/";
 
     private final GithubConfig githubConfig;
 
@@ -61,42 +56,15 @@ public class DefaultBaekjoonMarkdownGenerator implements MarkdownGenerator<Baekj
         List<BaekjoonProblem> problems = new ArrayList<>();
         for (Class<?> clazz : reflections.getTypesAnnotatedWith(baekjoonClass)) {
             for (Baekjoon annotation : clazz.getDeclaredAnnotationsByType(baekjoonClass)) {
-
-                String title = "";
-                Connection connect = Jsoup.connect("https://solved.ac/search?query=" + annotation.number());
-                try {
-                    Document html = connect.get();
-                    Elements elements = html.select("div.StickyTable__Table-sc-45ty5n-0");
-                    for (Element element : elements) {
-                        String[] split = element.select("span").text().split(" ");
-                        Queue<String> queue = new LinkedList();
-                        for (String value : split) {
-                            queue.add(value);
-                        }
-
-                        while (!queue.isEmpty()) {
-                            String name = queue.poll();
-                            if (name.equals(String.valueOf(annotation.number()))) {
-                                queue.poll();
-                                title = queue.poll();
-                            }
-                        }
-
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
                 problems.add(BaekjoonProblem.builder()
                     .location(githubConfig.parse(clazz))
                     .level(annotation.level())
-                    .name(title)
+                    .name(BaekjoonCrawling.getProblemName(annotation.number()))
                     .number(annotation.number())
-                    .url("https://www.acmicpc.net/problem/" + annotation.number())
+                    .url(BAEKJOON_URL + annotation.number())
                     .build());
             }
         }
         return problems;
     }
-
 }
