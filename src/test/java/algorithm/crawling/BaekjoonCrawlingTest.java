@@ -23,10 +23,10 @@ class BaekjoonCrawlingTest {
     }
 
     @Test
-    @DisplayName("crawling baekjoon title 1002")
+    @DisplayName("crawling baekjoon title 14496")
     void crawling1002() {
-        String problemName = BaekjoonCrawling.getProblemName(1002);
+        String problemName = BaekjoonCrawling.getProblemName(14496);
 
-        assertEquals(problemName, "터렛");
+        assertEquals(problemName, "그대, 그머가 되어");
     }
 }
